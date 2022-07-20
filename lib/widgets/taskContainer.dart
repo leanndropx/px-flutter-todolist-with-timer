@@ -22,52 +22,55 @@ class TaskContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Slidable(
-      child: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.symmetric(vertical: 2),
-        decoration: BoxDecoration(
-            color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              DateFormat('dd/MMM/yyyy - EE - HH:mm').format(task.datetime),
-              style: TextStyle(fontSize: 9),
-            ),
-            Text(
-              task.title,
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-            )
-          ],
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 2),
+      child: Slidable(
+        child: Container(
+          padding: EdgeInsets.all(16),
+          //margin: EdgeInsets.symmetric(vertical: 2),
+          decoration: BoxDecoration(
+              color: Colors.grey[200], borderRadius: BorderRadius.circular(8)),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                DateFormat('dd/MMM/yyyy - EE - HH:mm').format(task.datetime),
+                style: TextStyle(fontSize: 9),
+              ),
+              Text(
+                task.title,
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+              )
+            ],
+          ),
         ),
+        actionExtentRatio: 0.29,
+        actionPane: SlidableDrawerActionPane(),
+        secondaryActions: [
+          IconSlideAction(
+            icon: Icons.delete,
+            color: Colors.red,
+            caption: 'Deletar',
+            onTap: () {
+              DeleteTask(task);
+            },
+          ),
+        ],
+        actions: [
+          IconSlideAction(
+            icon: Icons.access_alarm,
+            color: Colors.red,
+            caption: 'Temporizar',
+            onTap: TimerDialogReverse,
+          ),
+          IconSlideAction(
+            icon: Icons.access_alarm,
+            color: Colors.green,
+            caption: 'Cronometrar',
+            onTap: TimerDialog,
+          )
+        ],
       ),
-      actionExtentRatio: 0.27,
-      actionPane: SlidableDrawerActionPane(),
-      secondaryActions: [
-        IconSlideAction(
-          icon: Icons.delete,
-          color: Colors.red,
-          caption: 'Deletar',
-          onTap: () {
-            DeleteTask(task);
-          },
-        ),
-        IconSlideAction(
-          icon: Icons.chat,
-          color: Colors.green,
-          caption: 'Iniciar',
-          onTap: TimerDialog,
-        )
-      ],
-      actions: [
-        IconSlideAction(
-          icon: Icons.chat,
-          color: Colors.green,
-          caption: 'Temporizador',
-          onTap: TimerDialogReverse,
-        ),
-      ],
     );
   }
 }
