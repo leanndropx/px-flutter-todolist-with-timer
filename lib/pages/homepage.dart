@@ -32,7 +32,6 @@ class _HomepageState extends State<Homepage> {
   bool get isTenMinutes => minutes >= 10 || minutesReverse >= 10;
   bool get isTenHours => hours >= 10 || hoursReverse >= 10;
 
-  //bool get isTimerRunning => timerRunning=true;
 
   int secondsReverse = 0;
   int minutesReverse = 2;
