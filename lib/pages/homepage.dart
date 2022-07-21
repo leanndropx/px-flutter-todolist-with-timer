@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:teste/repositories/taskRepository.dart';
 import 'package:teste/widgets/taskContainer.dart';
@@ -69,44 +69,25 @@ class _HomepageState extends State<Homepage> {
                         decoration: InputDecoration(
                             errorText: errorText,
                             labelText: 'Adicione uma tarefa',
-                            labelStyle: TextStyle(color: Color(0xff00d7f3)),
+                            labelStyle: const TextStyle(color: Color(0xff00d7f3)),
                             focusedBorder: const OutlineInputBorder(
                                 borderSide: BorderSide(
                                     color: Color(0xff00d7f3), width: 2)),
                             hintText: 'Estudar Fluter',
-                            border: OutlineInputBorder()),
+                            border: const OutlineInputBorder()),
                       ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     ElevatedButton(
-                      onPressed: () {
-                        String text = tasksController.text;
-
-                        if (text.isEmpty) {
-                          setState(() {
-                            errorText = 'O título não pode ser vazio';
-                          });
-                          return;
-                        }
-
-                        setState(() {
-                          TaskModel newTask = TaskModel(
-                              title: tasksController.text,
-                              datetime: DateTime.now());
-                          allTasks.add(newTask);
-                          errorText = null;
-                        });
-                        tasksController.clear();
-                        taskRepository.saveTasks(allTasks);
-                      },
+                      onPressed: addTaskIfNotEmptyField,
                       style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(19),
-                          primary: Color(0xff00d7f3)),
-                      child: Icon(Icons.add),
+                          padding: const EdgeInsets.all(19),
+                          primary: const Color(0xff00d7f3)),
+                      child: const Icon(Icons.add),
                     )
                   ],
                 ),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Flexible(
                     child: ListView(
                       shrinkWrap: true,
@@ -114,13 +95,13 @@ class _HomepageState extends State<Homepage> {
                         for (TaskModel eachTask in allTasks)
                           TaskContainer(
                             task: eachTask,
-                            DeleteTask: deleteTask,
-                            TimerDialog: ShowTimerDialog,
-                            TimerDialogReverse: ShowReverseTimerDialog,
+                            deleteTask: deleteTask,
+                            timerDialog: showTimerDialog,
+                            timerDialogReverse: showReverseTimerDialog,
                           )
                       ],
                     )),
-                SizedBox(height: 8),
+                const SizedBox(height: 8),
                 Row(
                   children: [
                     Expanded(
@@ -131,8 +112,8 @@ class _HomepageState extends State<Homepage> {
                         deleteAllTasks();
                       },
                       style: ElevatedButton.styleFrom(
-                          padding: EdgeInsets.all(16),
-                          primary: Color(0xff00d7f3)),
+                          padding: const EdgeInsets.all(16),
+                          primary: const Color(0xff00d7f3)),
                       child: const Text('Limpar tudo'),
                     )
                   ],
@@ -143,6 +124,27 @@ class _HomepageState extends State<Homepage> {
         ),
       ),
     );
+  }
+
+  void addTaskIfNotEmptyField(){
+
+    String taskContent = tasksController.text;
+    if (taskContent.isEmpty) {
+      setState(() {
+        errorText = 'O título não pode ser vazio';
+      });
+      return;
+    }
+    setState(() {
+      TaskModel newTask = TaskModel(
+          title: tasksController.text,
+          datetime: DateTime.now());
+      allTasks.add(newTask);
+      errorText = null;
+    });
+    tasksController.clear();
+    taskRepository.saveTasks(allTasks);
+
   }
 
   void deleteTask(TaskModel task) {
@@ -158,7 +160,7 @@ class _HomepageState extends State<Homepage> {
           duration: const Duration(seconds: 3),
           content: Text(
             'Tarefa ${task.title} deletada com sucesso',
-            style: TextStyle(color: Color(0xff060708)),
+            style: const TextStyle(color: Color(0xff060708)),
           ),
           backgroundColor: Colors.white,
           action: SnackBarAction(
@@ -208,10 +210,8 @@ class _HomepageState extends State<Homepage> {
   }
 
 
-
-
   //actions in Timer Dialog
-  void ShowTimerDialog() {
+  void showTimerDialog() {
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -228,30 +228,30 @@ class _HomepageState extends State<Homepage> {
                   const TextStyle(fontSize: 40, color: Color(0xff00d7f3)),
                 ),
               ),
-              insetPadding: EdgeInsets.all(12),
+              insetPadding: const EdgeInsets.all(12),
               backgroundColor: Colors.black.withAlpha(800),
               actions: [
                 TextButton(
-                  onPressed: QuitTimerDialogAndResetTimer,
+                  onPressed: quitTimerDialogAndResetTimer,
                   child: const Text(
                     'Fechar',
                     style: TextStyle(color: Colors.redAccent),
                   ),
                 ),
                 TextButton(
-                    onPressed: ResetTimer,
+                    onPressed: resetTimer,
                     child: const Text(
                       'Zerar',
                       style: TextStyle(color: Color(0xff00d7f3)),
                     )),
                 TextButton(
-                    onPressed: StopTimer,
+                    onPressed: stopTimer,
                     child: const Text(
                       'Parar',
                       style: TextStyle(color: Color(0xff00d7f3)),
                     )),
                 TextButton(
-                    onPressed: isTimerRunning ? null : StartTimer,
+                    onPressed: isTimerRunning ? null : startTimer,
                     child: const Text(
                       'Iniciar',
                       style: TextStyle(color: Colors.greenAccent),
@@ -260,8 +260,8 @@ class _HomepageState extends State<Homepage> {
             ));
   }
 
-  void StartTimer() {
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+  void startTimer() {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         isTimerRunning = true;
         if (seconds >= 0) {
@@ -278,7 +278,7 @@ class _HomepageState extends State<Homepage> {
 
           seconds++;
           Navigator.of(context).pop();
-          ShowTimerDialog();
+          showTimerDialog();
         } else {
           timer.cancel();
         }
@@ -286,7 +286,7 @@ class _HomepageState extends State<Homepage> {
     });
   }
 
-  void ResetTimer() {
+  void resetTimer() {
     setState(() {
       isTimerRunning = false;
       timer.cancel();
@@ -294,20 +294,20 @@ class _HomepageState extends State<Homepage> {
       minutes = 0;
       hours = 0;
       Navigator.pop(context);
-      ShowTimerDialog();
+      showTimerDialog();
     });
   }
 
-  void StopTimer() {
+  void stopTimer() {
     setState(() {
       timer.cancel();
       isTimerRunning = false;
       Navigator.of(context).pop();
-      ShowTimerDialog();
+      showTimerDialog();
     });
   }
 
-  void QuitTimerDialogAndResetTimer() {
+  void quitTimerDialogAndResetTimer() {
     setState(() {
       isTimerRunning = false;
       timer.cancel();
@@ -323,7 +323,7 @@ class _HomepageState extends State<Homepage> {
 
   //Actions in Reverse Timer Dialog
 
-  void ShowReverseTimerDialog() {
+  void showReverseTimerDialog() {
     showDialog(
         barrierDismissible: false,
         context: context,
@@ -342,30 +342,30 @@ class _HomepageState extends State<Homepage> {
                   const TextStyle(fontSize: 40, color: Color(0xff00d7f3)),
                 ),
               ),
-              insetPadding: EdgeInsets.all(12),
+              insetPadding: const EdgeInsets.all(12),
               backgroundColor: Colors.black.withAlpha(800),
               actions: [
                 TextButton(
-                  onPressed: QuitReverseTimerDialogAndResetTimer,
+                  onPressed: quitReverseTimerDialogAndResetTimer,
                   child: const Text(
                     'Fechar',
                     style: TextStyle(color: Colors.redAccent),
                   ),
                 ),
                 TextButton(
-                    onPressed: ResetReverseTimer,
+                    onPressed: resetReverseTimer,
                     child: const Text(
                       'Zerar',
                       style: TextStyle(color: Color(0xff00d7f3)),
                     )),
                 TextButton(
-                    onPressed: StopReverseTimer,
+                    onPressed: stopReverseTimer,
                     child: const Text(
                       'Parar',
                       style: TextStyle(color: Color(0xff00d7f3)),
                     )),
                 TextButton(
-                    onPressed: isTimerRunning ? null : StartReverseTimer,
+                    onPressed: isTimerRunning ? null : startReverseTimer,
                     child: const Text(
                       'Iniciar',
                       style: TextStyle(color: Colors.greenAccent),
@@ -375,7 +375,7 @@ class _HomepageState extends State<Homepage> {
 
   }
 
-  void StartReverseTimer() {
+  void startReverseTimer() {
     if (isTimerPaused){
       secondsReverse = secondsReversedPaused;
       minutesReverse = minutesReversePaused;
@@ -385,7 +385,7 @@ class _HomepageState extends State<Homepage> {
       minutesReverse--;
     }
 
-    timer = Timer.periodic(Duration(seconds: 1), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() {
         isTimerRunning = true;
         if(hoursReverse==0 && minutesReverse==0 && secondsReverse==0){
@@ -403,12 +403,12 @@ class _HomepageState extends State<Homepage> {
           }
         }
         Navigator.pop(context);
-        ShowReverseTimerDialog();
+        showReverseTimerDialog();
       });
     });
   }
 
-  void ResetReverseTimer() {
+  void resetReverseTimer() {
     setState(() {
       isTimerRunning = false;
       timer.cancel();
@@ -419,11 +419,11 @@ class _HomepageState extends State<Homepage> {
       minutesReversePaused = minutesReverse;
       hoursReversedPaused = hoursReverse;
       Navigator.pop(context);
-      ShowReverseTimerDialog();
+      showReverseTimerDialog();
     });
   }
 
-  void StopReverseTimer() {
+  void stopReverseTimer() {
     setState(() {
       isTimerPaused = true;
       minutesReversePaused = minutesReverse;
@@ -432,15 +432,15 @@ class _HomepageState extends State<Homepage> {
       timer.cancel();
       isTimerRunning = false;
       Navigator.of(context).pop();
-      ShowReverseTimerDialog();
+      showReverseTimerDialog();
     });
   }
 
-  void QuitReverseTimerDialogAndResetTimer() {
+  void quitReverseTimerDialogAndResetTimer() {
+    Navigator.of(context).pop();
     setState(() {
       isTimerRunning = false;
       timer.cancel();
-      Navigator.of(context).pop();
       secondsReverse = 0;
       minutesReverse = 2;
       hoursReverse = 1;

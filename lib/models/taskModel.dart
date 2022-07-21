@@ -1,8 +1,6 @@
-import 'dart:ffi';
-
 class TaskModel{
 
-  TaskModel({required this.title, required this.datetime, this.contagem});
+  TaskModel({required this.title, required this.datetime});
 
   TaskModel.fromJson(Map<String,dynamic>json):
       title = json['title'],
@@ -17,7 +15,6 @@ class TaskModel{
 
   late String title;
   late DateTime datetime;
-  double? contagem;
 
 
 }
