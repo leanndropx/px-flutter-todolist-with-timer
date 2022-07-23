@@ -2,7 +2,7 @@
 
 
 
-1. 1 To-Do list flutter application that was improved with 2 new functionalities: 1 timer that starts a counter from zero to  Close, Reset or Stop  button clicked. The timer is setted in the Brazilian standard (00 : 00 : 00) of hours, minutes and seconds. There is also 1 reverse timer that runs the same format but in a reverse timer from preset time coming back to zero, this funcionalitie is still being improved.
+1. Contains an Improved To-do list Flutter application raising 2 new functionalities: a Timer and a Reverse Timer to count the time of each task's execution. All the logic of timers was done into this project, so I did not use external packages for this and I definitely loved this challenge.
 
 
 
