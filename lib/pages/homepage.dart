@@ -26,7 +26,7 @@ class _HomepageState extends State<Homepage> {
   int minutes = 0;
   int hours = 0;
   bool isTimerRunning = false;
-  bool isTimerPaused = false;
+  bool isReverseTimerPaused = false;
 
   bool get isTenSeconds => seconds >= 10 || secondsReverse >= 10;
   bool get isTenMinutes => minutes >= 10 || minutesReverse >= 10;
@@ -376,7 +376,7 @@ class _HomepageState extends State<Homepage> {
   }
 
   void startReverseTimer() {
-    if (isTimerPaused){
+    if (isReverseTimerPaused){
       secondsReverse = secondsReversedPaused;
       minutesReverse = minutesReversePaused;
       hoursReverse = hoursReversedPaused;
@@ -425,7 +425,7 @@ class _HomepageState extends State<Homepage> {
 
   void stopReverseTimer() {
     setState(() {
-      isTimerPaused = true;
+      isReverseTimerPaused = true;
       minutesReversePaused = minutesReverse;
       secondsReversedPaused = secondsReverse;
       hoursReversedPaused = hoursReverse;
